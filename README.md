@@ -4,6 +4,9 @@ This is a port of the Dart
 [benchmark harness](https://github.com/dartlang/benchmark_harness) to
 [Scala.js](https://github.com/lampepfl/scala-js).
 
+You can see the benchmarks in action
+[here](http://jonas.github.io/scalajs-benchmarks/).
+
 ## Get started
 
 To run the benchmarks, first install the Scala.js compiler by following the
