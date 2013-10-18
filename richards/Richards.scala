@@ -126,25 +126,22 @@ class Scheduler {
 
   /// Add an idle task to this scheduler.
   def addIdleTask(id: Int, priority: Int, queue: Packet, count: Int) {
-    addRunningTask(id, priority, queue, new IdleTask(this, 1, count))
+    addRunningTask(id, priority, queue, IdleTask(this, 1, count))
   }
 
   /// Add a work task to this scheduler.
   def addWorkerTask(id: Int, priority: Int, queue: Packet) {
-    addTask(id,
-            priority,
-            queue,
-            new WorkerTask(this, Richards.ID_HANDLER_A, 0))
+    addTask(id, priority, queue, WorkerTask(this, Richards.ID_HANDLER_A, 0))
   }
 
   /// Add a handler task to this scheduler.
   def addHandlerTask(id: Int, priority: Int, queue: Packet) {
-    addTask(id, priority, queue, new HandlerTask(this))
+    addTask(id, priority, queue, HandlerTask(this))
   }
 
   /// Add a handler task to this scheduler.
   def addDeviceTask(id: Int, priority: Int, queue: Packet) {
-    addTask(id, priority, queue, new DeviceTask(this))
+    addTask(id, priority, queue, DeviceTask(this))
   }
 
   /// Add the specified task and mark it as running.
@@ -367,7 +364,7 @@ case class DeviceTask(scheduler: Scheduler) extends Task(scheduler) {
  * @param v1	A seed used to specify how work packets are manipulated.
  * @param v2	Another seed used to specify how work packets are manipulated.
  */
-class WorkerTask(scheduler: Scheduler, var v1: Int, var v2: Int) extends Task(scheduler) {
+case class WorkerTask(scheduler: Scheduler, var v1: Int, var v2: Int) extends Task(scheduler) {
 
   def run(packet: Packet): TaskControlBlock = {
     if (packet == null) {
@@ -388,7 +385,6 @@ class WorkerTask(scheduler: Scheduler, var v1: Int, var v2: Int) extends Task(sc
     scheduler.queue(packet)
   }
 
-  override def toString = "WorkerTask"
 }
 
 
