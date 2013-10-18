@@ -38,15 +38,18 @@ object ScalaJSBuild extends Build {
 
           clean := clean.dependsOn(
 	     clean in common,
+	     clean in richards,
 	     clean in tracer
 	  ).value
       )
   ).aggregate(
       common,
+      richards,
       tracer
   )
 
   lazy val common = project("Common", defaultSettings)
+  lazy val richards = project("Richards", benchmarkSettings).dependsOn(common)
   lazy val tracer = project("Tracer", benchmarkSettings).dependsOn(common)
 
   def project(id: String, settings: Seq[sbt.Def.Setting[_]]) = Project(
