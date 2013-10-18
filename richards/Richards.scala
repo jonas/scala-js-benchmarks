@@ -323,14 +323,14 @@ case class IdleTask(scheduler: Scheduler, var v1: Int, var count: Int) extends T
   def run(packet: Packet): TaskControlBlock = {
     count -= 1
     if (count == 0) {
-	  scheduler.holdCurrent()
-	} else if ((v1 & 1) == 0) {
+      scheduler.holdCurrent()
+    } else if ((v1 & 1) == 0) {
       v1 = v1 >> 1
       scheduler.release(Richards.ID_DEVICE_A)
     } else {
-	  v1 = (v1 >> 1) ^ 0xD008
-	  scheduler.release(Richards.ID_DEVICE_B)
-	}
+      v1 = (v1 >> 1) ^ 0xD008
+      scheduler.release(Richards.ID_DEVICE_B)
+    }
   }
 
 }
