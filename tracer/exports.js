@@ -3,16 +3,14 @@
  * Author: Jonas Fonseca
  */
 
-// Guard against minification.
-var Tracer = this['Tracer'] || {};
-this['Tracer'] = Tracer;
+(function(ScalaJSBenchmarks) {
+  ScalaJSBenchmarks.push(function() {
+    var benchmark = new ScalaJS.classes.benchmarks\ufe33tracer\ufe33Tracer();
+    benchmark.report();
+  });
 
-Tracer['startApp'] = function() {
-  var app = new ScalaJS.classes.benchmarks\ufe33tracer\ufe33App();
-  app.init();
-};
-
-Tracer['startBenchmark'] = function() {
-  var benchmark = new ScalaJS.classes.benchmarks\ufe33tracer\ufe33Tracer();
-  benchmark.report();
-};
+  ScalaJSBenchmarks['startApp'] = function() {
+    var app = new ScalaJS.classes.benchmarks\ufe33tracer\ufe33App();
+    app.init();
+  };
+})(this['ScalaJSBenchmarks'] || (this['ScalaJSBenchmarks'] = []))
