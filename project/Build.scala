@@ -46,21 +46,15 @@ object ScalaJSBuild extends Build {
       tracer
   )
 
-  lazy val common = Project(
-      id = "common",
-      base = file("common"),
-      settings = defaultSettings ++ Seq(
-          name := "Common - Scala.js Benchmark",
-          moduleName := "common"
+  lazy val common = project("Common", defaultSettings)
+  lazy val tracer = project("Tracer", benchmarkSettings).dependsOn(common)
+
+  def project(id: String, settings: Seq[sbt.Def.Setting[_]]) = Project(
+      id = id.toLowerCase,
+      base = file(id.toLowerCase),
+      settings = settings ++ Seq(
+          name := s"$id - Scala.js Benchmark",
+          moduleName := id.toLowerCase
       )
   )
-
-  lazy val tracer = Project(
-      id = "tracer",
-      base = file("tracer"),
-      settings = benchmarkSettings ++ Seq(
-          name := "Tracer - Scala.js Benchmark",
-          moduleName := "tracer"
-      )
-  ).dependsOn(common)
 }
