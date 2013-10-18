@@ -38,8 +38,8 @@ class Engine(val config: EngineConfiguration) {
   // 'canvasContext' can be null if raytracer runs as benchmark
   def renderScene(scene: Scene, canvasContext: CanvasRenderingContext2D): Unit = {
     for {
-      y <- 0 to config.canvasHeight - 1
-      x <- 0 to config.canvasWidth - 1
+      y <- 0 until config.canvasHeight
+      x <- 0 until config.canvasWidth 
     } {
       val yp = y * 1.0 / config.canvasHeight * 2 - 1;
       val xp = x * 1.0 / config.canvasWidth * 2 - 1;
