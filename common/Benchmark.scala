@@ -10,61 +10,44 @@ package benchmarks
 
 import scala.compat.Platform
 
-/** `Benchmark` can be used to quickly turn an existing class into a
- *  benchmark. Here is a short example:
- *  {{{
- *  object sort1 extends Sorter with Benchmark {
- *    def run = sort(List.range(1, 1000))
- *  }
- *  }}}
+/** `Benchmark` base class based on the deprecated scala.test.Benchmark.
+ *
  *  The `run` method has to be defined by the user, who will perform the
- *  timed operation there. Run the benchmark as follows:
- *  {{{
- *  > scala sort1 5
- *  }}}
+ *  timed operation there.
+ *
  *  This will run the benchmark 5 times, forcing a garbage collection
  *  between runs, and printing the execution times to stdout.
  *
- *  It is also possible to add a multiplier, so
- *  {{{
- *  > scala sort1 5 10
- *  }}}
- *  will run the entire benchmark 10 times, each time for 5 runs.
- *
  *  @author Iulian Dragos, Burak Emir
  */
-//@deprecated("This class will be removed.", "2.10.0")
 abstract class Benchmark {
 
-  /** this method should be implemented by the concrete benchmark.
-   *  This method is called by the benchmarking code for a number of times.
-   *  The GC is called between "multiplier" calls to run, right after tear
-   *  down.
+  /** This method should be implemented by the concrete benchmark.
+   *  It will be called by the benchmarking code for a number of times.
    *
    *  @see setUp
    *  @see tearDown
    */
   def run()
 
-  var multiplier = 1
-
-  /** Run the benchmark the specified number of times and return a list with
-   *  the execution times in milliseconds in reverse order of the execution.
+  /** Run the benchmark the specified number of milliseconds and return
+   *  the average execution time in microseconds.
    */
-  def runBenchmark(noTimes: Int): List[Long] =
-    for (i <- List.range(1, noTimes + 1)) yield {
-      setUp
-      val startTime = Platform.currentTime
-      var i = 0; while (i < multiplier) {
-        run()
-        i += 1
-      }
-      val stopTime = Platform.currentTime
-      tearDown
-      Platform.collectGarbage
+  def runBenchmark(timeMinimum: Long): Double = {
+    var runs = 0
+    val startTime = Platform.currentTime
+    var stopTime = startTime + timeMinimum
+    var currentTime = startTime
 
-      stopTime - startTime
-    }
+    do {
+      run()
+      runs += 1
+      currentTime = Platform.currentTime
+    } while (currentTime < stopTime)
+
+    val elapsed = currentTime - startTime
+    1000.0 * elapsed / runs
+  }
 
   /** Prepare any data needed by the benchmark, but whose execution time
    *  should not be measured. This method is run before each call to the
@@ -80,8 +63,8 @@ abstract class Benchmark {
    */
   def tearDown() {}
 
-  /** a string that is written at the beginning of the output line
-   *   that contains the timings. By default, this is the class name.
+  /** A string that is written at the beginning of the output line
+   *  that contains the timings. By default, this is the class name.
    */
   def prefix: String = getClass().getName()
 
@@ -90,9 +73,10 @@ abstract class Benchmark {
   }
 
   def report() {
+    setUp
     warmUp
-    val results = runBenchmark(2000)
-    val avg = results.sum * 1000.0 / results.length
+    val avg = runBenchmark(2000)
+    tearDown
 
     println(s"$prefix: $avg us")
   }
