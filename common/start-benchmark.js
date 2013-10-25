@@ -3,9 +3,6 @@
  * Author: Jonas Fonseca
  */
 
-this['console'] = {};
-this['console']['log'] = print;
-
-(this['ScalaJSBenchmarks'] || []).forEach(function(benchmark) {
+this['ScalaJSBenchmarks'].forEach(function(benchmark) {
   benchmark();
 });
