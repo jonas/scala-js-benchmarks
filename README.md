@@ -7,6 +7,11 @@ This is a port of the Dart
 You can see the benchmarks in action
 [here](http://jonas.github.io/scalajs-benchmarks/).
 
+All derivative work is the copyright of their respective authors and
+distributed under their original license. All original work unless otherwise
+stated is distributed under the [same license as
+Scala.js](https://github.com/jonas/scalajs-benchmarks/LICENSE).
+
 ## Get started
 
 To run the benchmarks, first install the Scala.js compiler by following the

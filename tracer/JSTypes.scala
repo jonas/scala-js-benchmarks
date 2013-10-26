@@ -1,7 +1,10 @@
-/* Scala.js example code
- * Public domain
- * @author  Sébastien Doeraene
- */
+/*                     __                                               *\
+**     ________ ___   / /  ___      __ ____  Scala.js Benchmarks        **
+**    / __/ __// _ | / /  / _ | __ / // __/  (c) 2013,                  **
+**  __\ \/ /__/ __ |/ /__/ __ |/_// /_\ \            Sébastien Doeraene **
+** /____/\___/_/ |_/____/_/ | |__/ /____/    Public domain              **
+**                          |/____/                                     **
+\*                                                                      */
 
 package benchmarks.tracer
 

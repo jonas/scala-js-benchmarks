@@ -1,16 +1,16 @@
 /*                     __                                               *\
-**     ________ ___   / /  ___     Scala API                            **
-**    / __/ __// _ | / /  / _ |    (c) 2003-2013, LAMP/EPFL             **
-**  __\ \/ /__/ __ |/ /__/ __ |    http://scala-lang.org/               **
-** /____/\___/_/ |_/____/_/ | |                                         **
-**                          |/                                          **
+**     ________ ___   / /  ___      __ ____  Scala.js Benchmarks        **
+**    / __/ __// _ | / /  / _ | __ / // __/  (c) 2003-2013, LAMP/EPFL   **
+**  __\ \/ /__/ __ |/ /__/ __ |/_// /_\ \    (c) 2013, Jonas Fonseca    **
+** /____/\___/_/ |_/____/_/ | |__/ /____/                               **
+**                          |/____/                                     **
 \*                                                                      */
 
 package benchmarks
 
 import scala.compat.Platform
 
-/** `Benchmark` base class based on the deprecated scala.test.Benchmark.
+/** `Benchmark` base class based on the deprecated scala.testing.Benchmark.
  *
  *  The `run` method has to be defined by the user, who will perform the
  *  timed operation there.

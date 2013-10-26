@@ -1,3 +1,11 @@
+/*                     __                                               *\
+**     ________ ___   / /  ___      __ ____  Scala.js Benchmarks        **
+**    / __/ __// _ | / /  / _ | __ / // __/  (c) 2013, Jonas Fonseca    **
+**  __\ \/ /__/ __ |/ /__/ __ |/_// /_\ \                               **
+** /____/\___/_/ |_/____/_/ | |__/ /____/                               **
+**                          |/____/                                     **
+\*                                                                      */
+
 // Copyright 2006-2008 the V8 project authors. All rights reserved.
 // Redistribution and use in source and binary forms, with or without
 // modification, are permitted provided that the following conditions are

@@ -1,3 +1,11 @@
+/*                     __                                               *\
+**     ________ ___   / /  ___      __ ____  Scala.js Benchmarks        **
+**    / __/ __// _ | / /  / _ | __ / // __/  Adam Burmister             **
+**  __\ \/ /__/ __ |/ /__/ __ |/_// /_\ \    2012, Google, Inc          **
+** /____/\___/_/ |_/____/_/ | |__/ /____/    2013, Jonas Fonseca        **
+**                          |/____/                                     **
+\*                                                                      */
+
 // The ray tracer code in this file is written by Adam Burmister. It
 // is available in its original form from:
 //
@@ -8,12 +16,6 @@
 package benchmarks.tracer
 
 class Vector(val x: Double, val y: Double, val z: Double) {
-
-//  def copy(Vector v): Vector = {
-//    this.x = v.x;
-//    this.y = v.y;
-//    this.z = v.z;
-//  }
 
   def normalize: Vector = {
     val m = this.magnitude
