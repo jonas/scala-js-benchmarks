@@ -34,12 +34,19 @@ case class EngineConfiguration(
 
 class Engine(val config: EngineConfiguration) {
 
+  // Sum for verifying that the scene was ray traced correctly.
+  private var diagonalColorBrightnessCheckSum = 0
+
   def setPixel(canvasContext: CanvasRenderingContext2D, x: Int, y: Int, color: Color): Unit = {
     val (pxW, pxH) = (config.pixelWidth, config.pixelHeight)
 
     if (canvasContext != null) {
       canvasContext.fillStyle = color.toString
       canvasContext.fillRect(x * pxW, y * pxH, pxW, pxH)
+    } else {
+      if (x == y) {
+        diagonalColorBrightnessCheckSum += color.brightness
+      }
     }
   }
 
@@ -55,6 +62,10 @@ class Engine(val config: EngineConfiguration) {
       val ray = scene.camera.getRay(xp, yp);
       val color = getPixelColor(ray, scene)
       setPixel(canvasContext, x, y, color)
+    }
+ 
+    if (canvasContext == null && diagonalColorBrightnessCheckSum != 2321) {
+      throw new Error("Scene rendered incorrectly")
     }
   }
 
