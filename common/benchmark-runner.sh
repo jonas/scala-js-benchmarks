@@ -29,7 +29,7 @@ while test $# != 0; do
 	arg="$1"; shift
 
 	case "$arg" in
-	dev|opt) mode="$arg" ;;
+	dev|opt|js) mode="$arg" ;;
 	d8) engine="${arg}" ;;
 	node) engine="${arg}" runner="${arg}_runner" ;;
 	esac
@@ -47,6 +47,12 @@ node_runner()
 run_benchmark()
 {
 	case "$mode" in
+	js)
+		$runner "$LIB_DIR/$engine-stubs.js" \
+			"$LIB_DIR/reference/bench.js" \
+			"$LIB_DIR/reference/$BENCHMARK.js" \
+			"$LIB_DIR/start-benchmark.js"
+		;;
 	opt)
 		$runner "$LIB_DIR/$engine-stubs.js" \
 			"$OUT_DIR/$BENCHMARK-opt.js" \
@@ -60,6 +66,6 @@ run_benchmark()
 			"$LIB_DIR/start-benchmark.js"
 		;;
 	*)
-		echo "Usage: $0 [d8|node] [dev|opt]"
+		echo "Usage: $0 [d8|node] [dev|opt|js]"
 	esac
 }

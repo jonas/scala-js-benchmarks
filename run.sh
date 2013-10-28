@@ -19,7 +19,7 @@ for benchmark in $(find . -mindepth 2 -name "run.sh"); do
 	info "$name [opt] sbt"
 	TIME="%E" time sbt "$name/optimizeJS" >/dev/null
 
-	for mode in dev opt; do
+	for mode in dev opt js; do
 		for engine in d8 node; do
 			info "$name [$mode] $engine" 
 			"$name/run.sh" "$engine" "$mode" | sed 's/[^:]*:\s//'
