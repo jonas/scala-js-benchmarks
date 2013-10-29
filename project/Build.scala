@@ -1,7 +1,7 @@
 import sbt._
 import Keys._
 
-import ch.epfl.lamp.sbtscalajs._
+import scala.scalajs.sbtplugin._
 import ScalaJSPlugin._
 import ScalaJSKeys._
 
