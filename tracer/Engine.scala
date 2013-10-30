@@ -15,7 +15,7 @@
 // Ported from the Dart benchmark_harness to Scala.js by Jonas Fonseca 2013
 package benchmarks.tracer
 
-import scala.js
+import scala.scalajs.js
 
 case class EngineConfiguration(
   imageWidth: Int = 100,

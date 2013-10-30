@@ -8,7 +8,7 @@
 
 package benchmarks.tracer
 
-import scala.js
+import scala.scalajs.js
 
 trait DOMElement extends js.Object {
   var innerHTML: js.String
