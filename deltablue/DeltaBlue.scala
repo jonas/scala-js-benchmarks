@@ -101,6 +101,8 @@ class DeltaBlue extends benchmarks.Benchmark {
     projectionTest(100)
   }
 
+  var planner: Planner = null
+
   /**
    * This is the standard DeltaBlue benchmark. A long chain of equality
    * constraints is constructed with a stay constraint on one end. An
@@ -115,7 +117,7 @@ class DeltaBlue extends benchmarks.Benchmark {
    * two extremes.
    */
   def chainTest(n: Int) {
-    implicit val planner = new Planner()
+    planner = new Planner()
     var prev: Variable = null
     var first: Variable = null
     var last: Variable = null
@@ -151,7 +153,7 @@ class DeltaBlue extends benchmarks.Benchmark {
    * mapping and to change the scale and offset factors.
    */
   def projectionTest(n: Int) {
-    implicit val planner = new Planner()
+    planner = new Planner()
     val scale = new Variable("scale", 10)
     val offset = new Variable("offset", 1000)
     var src: Variable = null
@@ -185,7 +187,7 @@ class DeltaBlue extends benchmarks.Benchmark {
     }
   }
   
-  def change(v: Variable, newValue: Int)(implicit planner: Planner)  {
+  def change(v: Variable, newValue: Int)  {
     val edit = new EditConstraint(v, PREFERRED)
     val plan = planner.extractPlanFromConstraints(ArrayBuffer(edit))
     var i = 0
@@ -196,7 +198,6 @@ class DeltaBlue extends benchmarks.Benchmark {
     }
     edit.destroyConstraint
   }
-}
 
 
 /**
@@ -237,7 +238,7 @@ object Strength {
 }
 
 
-abstract class Constraint(val strength: Strength)(implicit planner: Planner)  {
+abstract class Constraint(val strength: Strength)  {
 
   def isSatisfied(): Boolean
   def markUnsatisfied(): Unit
@@ -302,7 +303,7 @@ abstract class Constraint(val strength: Strength)(implicit planner: Planner)  {
  * Abstract superclass for constraints having a single possible output variable.
  * @param output	Returns the current output variable.
  */
-abstract class UnaryConstraint(val output: Variable, strength: Strength)(implicit planner: Planner) extends Constraint(strength) {
+abstract class UnaryConstraint(val output: Variable, strength: Strength) extends Constraint(strength) {
 
   private var satisfied = false
 
@@ -358,7 +359,7 @@ abstract class UnaryConstraint(val output: Variable, strength: Strength)(implici
  * change their output during plan execution.  This is called "stay
  * optimization".
  */
-class StayConstraint(v: Variable, str: Strength)(implicit planner: Planner) extends UnaryConstraint(v, str) {
+class StayConstraint(v: Variable, str: Strength) extends UnaryConstraint(v, str) {
   def execute() {
     // Stay constraints do nothing.
   }
@@ -369,7 +370,7 @@ class StayConstraint(v: Variable, str: Strength)(implicit planner: Planner) exte
  * A unary input constraint used to mark a variable that the client
  * wishes to change.
  */
-class EditConstraint(v: Variable, str: Strength)(implicit planner: Planner) extends UnaryConstraint(v, str) {
+class EditConstraint(v: Variable, str: Strength) extends UnaryConstraint(v, str) {
 
   /// Edits indicate that a variable is to be changed by imperative code.
   override val isInput = true
@@ -391,7 +392,7 @@ object Direction {
  * Abstract superclass for constraints having two possible output
  * variables.
  */
-abstract class BinaryConstraint(v1: Variable, v2: Variable, strength: Strength)(implicit planner: Planner) extends Constraint(strength) {
+abstract class BinaryConstraint(v1: Variable, v2: Variable, strength: Strength) extends Constraint(strength) {
 
   protected var direction = Direction.NONE
 
@@ -492,7 +493,7 @@ abstract class BinaryConstraint(v1: Variable, v2: Variable, strength: Strength)(
  */
 
 class ScaleConstraint(v1: Variable, scale: Variable, offset: Variable,
-                      v2: Variable, strength: Strength)(implicit planner: Planner)
+                      v2: Variable, strength: Strength)
     extends BinaryConstraint(v1, v2, strength) {
 
   /// Adds this constraint to the constraint graph.
@@ -543,7 +544,7 @@ class ScaleConstraint(v1: Variable, scale: Variable, offset: Variable,
 /**
  * Constrains two variables to have the same value.
  */
-class EqualityConstraint(v1: Variable, v2: Variable, strength: Strength)(implicit planner: Planner) extends BinaryConstraint(v1, v2, strength) {
+class EqualityConstraint(v1: Variable, v2: Variable, strength: Strength) extends BinaryConstraint(v1, v2, strength) {
   /// Enforce this constraint. Assume that it is satisfied.
   def execute() {
     if (direction == Direction.FORWARD) v2.value = v1.value
@@ -770,4 +771,6 @@ class Plan {
       i += 1
     }
   }
+}
+
 }
