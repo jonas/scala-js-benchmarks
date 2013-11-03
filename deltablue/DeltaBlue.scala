@@ -62,10 +62,10 @@ class ArrayBuffer[T]() {
   }
 
   def length = array.length.toInt
-  def size = array.length.toInt
   def remove(index: Int): T = {
-    val last = array.splice(index, 1)
-    last(0)
+    val i = apply(index)
+    array.splice(index, 1)
+    i
   }
 
   def foreach(f: (T) ⇒ Unit): Unit = {
@@ -661,7 +661,7 @@ class Planner {
     val plan = new Plan()
     val todo = sources
     while (todo.length > 0) {
-      val c = todo.remove(todo.size - 1)
+      val c = todo.remove(0)
       if (c.output().mark != mark && c.inputsKnown(mark)) {
         plan.addConstraint(c)
         c.output().mark = mark
@@ -700,7 +700,7 @@ class Planner {
   def addPropagate(c: Constraint, mark: Int): Boolean = {
     val todo = ArrayBuffer[Constraint](c)
     while (todo.length > 0) {
-      val d = todo.remove(todo.size - 1)
+      val d = todo.remove(0)
       if (d.output().mark == mark) {
         incrementalRemove(c)
         return false
@@ -723,7 +723,7 @@ class Planner {
     val unsatisfied = ArrayBuffer[Constraint]()
     val todo = ArrayBuffer[Variable](out)
     while (todo.length > 0) {
-      val v = todo.remove(todo.size - 1)
+      val v = todo.remove(0)
       v.constraints.foreach { c =>
         if (!c.isSatisfied()) unsatisfied += c
       }
