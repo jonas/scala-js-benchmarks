@@ -546,7 +546,8 @@ class ScaleConstraint(v1: Variable, scale: Variable, offset: Variable,
 class EqualityConstraint(v1: Variable, v2: Variable, strength: Strength)(implicit planner: Planner) extends BinaryConstraint(v1, v2, strength) {
   /// Enforce this constraint. Assume that it is satisfied.
   def execute() {
-    output().value = input().value
+    if (direction == Direction.FORWARD) v2.value = v1.value
+    else v1.value = v2.value
   }
 }
 
@@ -762,6 +763,11 @@ class Plan {
   def size() = list.length
 
   def execute() {
-    list.foreach(_.execute)
+    //list.foreach(_.execute)
+    var i = 0
+    while (i < list.length) {
+      list(i).execute
+      i += 1
+    }
   }
 }
