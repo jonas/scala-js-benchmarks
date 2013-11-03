@@ -243,8 +243,9 @@ abstract class Constraint(val strength: Strength)(implicit planner: Planner)  {
 
 /**
  * Abstract superclass for constraints having a single possible output variable.
+ * @param output	Returns the current output variable.
  */
-abstract class UnaryConstraint(myOutput: Variable, strength: Strength)(implicit planner: Planner) extends Constraint(strength) {
+abstract class UnaryConstraint(val output: Variable, strength: Strength)(implicit planner: Planner) extends Constraint(strength) {
 
   private var satisfied = false
 
@@ -252,14 +253,14 @@ abstract class UnaryConstraint(myOutput: Variable, strength: Strength)(implicit 
 
   /// Adds this constraint to the constraint graph
   def addToGraph() {
-    myOutput.addConstraint(this)
+    output.addConstraint(this)
     satisfied = false
   }
 
   /// Decides if this constraint can be satisfied and records that decision.
  def chooseMethod(mark: Int) {
-    satisfied = (myOutput.mark != mark) &&
-        Strength.stronger(strength, myOutput.walkStrength)
+    satisfied = (output.mark != mark) &&
+        Strength.stronger(strength, output.walkStrength)
   }
 
   /// Returns true if this constraint is satisfied in the current solution.
@@ -269,18 +270,15 @@ abstract class UnaryConstraint(myOutput: Variable, strength: Strength)(implicit 
     // has no inputs.
   }
 
-  /// Returns the current output variable.
-  def output() = myOutput
-
   /**
    * Calculate the walkabout strength, the stay flag, and, if it is
    * 'stay', the value for the current output of this constraint. Assume
    * this constraint is satisfied.
    */
   def recalculate() {
-    myOutput.walkStrength = strength
-    myOutput.stay = !isInput
-    if (myOutput.stay) execute(); // Stay optimization.
+    output.walkStrength = strength
+    output.stay = !isInput
+    if (output.stay) execute(); // Stay optimization.
   }
 
   /// Records that this constraint is unsatisfied.
@@ -291,7 +289,7 @@ abstract class UnaryConstraint(myOutput: Variable, strength: Strength)(implicit 
   def inputsKnown(mark: Int) = true
 
   def removeFromGraph() {
-    if (myOutput != null) myOutput.removeConstraint(this)
+    if (output != null) output.removeConstraint(this)
     satisfied = false
   }
 }
