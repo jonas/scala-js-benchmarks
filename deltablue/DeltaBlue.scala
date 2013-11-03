@@ -45,7 +45,52 @@ package benchmarks.deltablue
  * implementation.
  */
 
-import scala.collection.mutable.ArrayBuffer
+//import scala.collection.mutable.ArrayBuffer
+import scala.scalajs.js
+
+class ArrayBuffer[T]() {
+
+  private var array = new js.Array[T]()
+ 
+  def apply(index: Int): T = array(index)
+  def +=(item: T) = array.push(item)
+  def -=(item: T): Unit = {
+    def itemEquals(x: T, index: js.Number, arr: js.Array[T]): js.Boolean =
+      item != x
+
+    array = array.filter(itemEquals _)
+  }
+
+  def length = array.length.toInt
+  def size = array.length.toInt
+  def remove(index: Int): T = {
+    val last = array.splice(index, 1)
+    last(0)
+  }
+
+  def foreach(f: (T) ⇒ Unit): Unit = {
+    array.forEach((item: T, index: js.Number, arr: js.Array[T]) => f(item))
+  }
+
+  override def toString = {
+    var a = ""
+    var prefix = ""
+    for (i <- this) {
+      a += s"$prefix$i"
+      prefix = ", "
+    }
+    s"[$a]"
+  }
+}
+
+object ArrayBuffer {
+  def apply[T](): ArrayBuffer[T] = new ArrayBuffer()
+  def apply[T](item: T): ArrayBuffer[T] = {
+    val a = new ArrayBuffer[T]()
+    a += item
+    a
+  }
+}
 
 class DeltaBlue extends benchmarks.Benchmark {
 
@@ -76,22 +121,26 @@ class DeltaBlue extends benchmarks.Benchmark {
     var last: Variable = null
 
     // Build chain of n equality constraints.
-    for (i <- 0 to n) {
+    var i = 0
+    while (i <= n) {
       val v = new Variable("v", 0)
       if (prev != null) new EqualityConstraint(prev, v, REQUIRED)
       if (i == 0) first = v
       if (i == n) last = v
       prev = v
+      i += 1
     }
     new StayConstraint(last, STRONG_DEFAULT)
     val edit = new EditConstraint(first, PREFERRED)
     val plan = planner.extractPlanFromConstraints(ArrayBuffer(edit))
-    for (i <- 0 until 100) {
+    i = 0
+    while (i < 100) {
       first.value = i
       plan.execute()
       if (last.value != i) {
         print("Chain test failed.\n{last.value)\n{i}")
       }
+      i += 1
     }
   }
   
@@ -109,33 +158,41 @@ class DeltaBlue extends benchmarks.Benchmark {
     var dst: Variable = null
   
     val dests = ArrayBuffer[Variable]()
-    for (i <- 0 until n) {
+    var i = 0
+    while (i < n) {
       src = new Variable("src", i)
       dst = new Variable("dst", i)
       dests += dst
       new StayConstraint(src, NORMAL)
       new ScaleConstraint(src, scale, offset, dst, REQUIRED)
+      i += 1
     }
     change(src, 17)
     if (dst.value != 1170) print("Projection 1 failed")
     change(dst, 1050)
     if (src.value != 5) print("Projection 2 failed")
     change(scale, 5)
-    for (i <- 0 until n - 1) {
+    i = 0
+    while (i < n - 1) {
       if (dests(i).value != i * 5 + 1000) print("Projection 3 failed")
+      i += 1
     }
     change(offset, 2000)
-    for (i <- 0 until n - 1) {
+    i = 0
+    while (i < n - 1) {
       if (dests(i).value != i * 5 + 2000) print("Projection 4 failed")
+      i += 1
     }
   }
   
   def change(v: Variable, newValue: Int)(implicit planner: Planner)  {
     val edit = new EditConstraint(v, PREFERRED)
     val plan = planner.extractPlanFromConstraints(ArrayBuffer(edit))
-    for (i <- 0 until 10) {
+    var i = 0
+    while (i < 10) {
       v.value = newValue
       plan.execute()
+      i += 1
     }
     edit.destroyConstraint
   }
@@ -567,7 +624,7 @@ class Planner {
     val unsatisfied = removePropagateFrom(out)
     var strength: Strength = REQUIRED
     do {
-      for (u <- unsatisfied) {
+      unsatisfied.foreach { u =>
         if (u.strength == strength) incrementalAdd(u)
       }
       strength = strength.nextWeaker()
@@ -618,9 +675,9 @@ class Planner {
    * Extract a plan for resatisfying starting from the output of the
    * given [constraints], usually a set of input constraints.
    */
-  def extractPlanFromConstraints(constraints: Seq[Constraint]) = {
+  def extractPlanFromConstraints(constraints: ArrayBuffer[Constraint]) = {
     val sources = ArrayBuffer[Constraint]()
-    for (c <- constraints) {
+    constraints.foreach { c =>
       // if not in plan already and eligible for inclusion.
       if (c.isInput && c.isSatisfied()) sources += c
     }
@@ -659,7 +716,7 @@ class Planner {
    * downstream of the given constraint. Answer a collection of
    * unsatisfied constraints sorted in order of decreasing strength.
    */
-  def removePropagateFrom(out: Variable): Seq[Constraint] = {
+  def removePropagateFrom(out: Variable): ArrayBuffer[Constraint] = {
     out.determinedBy = null
     out.walkStrength = WEAKEST
     out.stay = true
@@ -667,11 +724,11 @@ class Planner {
     val todo = ArrayBuffer[Variable](out)
     while (todo.length > 0) {
       val v = todo.remove(todo.size - 1)
-      for (c <- v.constraints) {
+      v.constraints.foreach { c =>
         if (!c.isSatisfied()) unsatisfied += c
       }
       val determining = v.determinedBy
-      for (next <- v.constraints) {
+      v.constraints.foreach { next =>
         if (next != determining && next.isSatisfied()) {
           next.recalculate()
           todo += next.output()
@@ -683,7 +740,7 @@ class Planner {
 
   def addConstraintsConsumingTo(v: Variable, coll: ArrayBuffer[Constraint]) {
     val determining = v.determinedBy
-    for (c <- v.constraints) {
+    v.constraints.foreach { c =>
       if (c != determining && c.isSatisfied()) coll +=c 
     }
   }
@@ -705,8 +762,6 @@ class Plan {
   def size() = list.length
 
   def execute() {
-    for (constraint <- list) {
-      constraint.execute()
-    }
+    list.foreach(_.execute)
   }
 }
