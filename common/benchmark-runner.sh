@@ -13,7 +13,7 @@
 
 RUN_DIR="$(dirname "$0")"
 ROOT_DIR="./$(git rev-parse --show-cdup)" 
-ENGINES="d8 node"
+ENGINES="d8 node phantomjs"
 MODES="dev opt js"
 SEP='
 '
@@ -27,7 +27,7 @@ die() {
 
 info()
 {
-	printf "%-20s : " "$1"; shift
+	printf "%-25s : " "$1"; shift
 	test $# -gt 0 && echo "$@"
 }
 
@@ -62,6 +62,8 @@ detect_engine()
 	case "$engine" in
 	d8)	find_binary "-e print(version())" d8 ;;
 	node)	find_binary "-v" node nodejs js ;;
+	phantomjs)
+		find_binary "-v" phantomjs ;;
 	*)	die "Unknown engine: $engine"
 	esac
 }
@@ -99,7 +101,9 @@ run_benchmark_mode()
 	} > "$js"
 
 	info "$benchmark [$mode] $engine" 
-	"$engine_bin" "$js" | sed 's/[^:]*:\s//'
+	# Remove benchmark prefix (e.g. DeltaBlue:) and squelch
+	# PhantomJS warning
+	"$engine_bin" "$js" 2>&1 | sed 's/[^:]*:\s//' | grep -v phantomjs
 }
 
 run_benchmark()
@@ -113,9 +117,12 @@ run_benchmark()
 		arg="$1"; shift
 
 		case "$arg" in
-		dev|opt|js)	modes="$modes$SEP$arg" ;;
-		d8|node)	engines="$engines$SEP$arg" ;;
-		*)		die "Usage: $0 $(print_option $ENGINES) $(print_option $MODES)"
+		dev|opt|js)
+			modes="$modes$SEP$arg" ;;
+		d8|node|phantomjs)
+			engines="$engines$SEP$arg" ;;
+		*)
+			die "Usage: $0 $(print_option $ENGINES) $(print_option $MODES)"
 		esac
 	done
 

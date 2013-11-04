@@ -13,3 +13,7 @@
 this['ScalaJSBenchmarks'].forEach(function(benchmark) {
   benchmark();
 });
+
+if (typeof phantom === 'object') {
+	phantom.exit();
+}
