@@ -83,28 +83,20 @@ run_benchmark_mode()
 
 	test -z "$engine_bin" && return
 
-	case "$mode" in
-	js)
-		cat	"$lib_dir/$engine-stubs.js" \
-			"$lib_dir/reference/bench.js" \
-			"$lib_dir/reference/$benchmark.js" \
-			"$lib_dir/start-benchmark.js"
-		;;
-	opt)
-		cat	"$lib_dir/$engine-stubs.js" \
-			"$out_dir/$benchmark-opt.js" \
-			"$lib_dir/start-benchmark.js"
-		;;
-	dev)
-		cat	"$lib_dir/$engine-stubs.js" \
-			"$out_dir/$benchmark-extdeps.js" \
-			"$out_dir/$benchmark-intdeps.js" \
-			"$out_dir/$benchmark.js" \
-			"$lib_dir/start-benchmark.js"
-		;;
-	*)
-		die "Unknown mode: $mode"
-	esac > "$js"
+	{
+		test -e "$lib_dir/$engine-stubs.js" &&
+			cat "$lib_dir/$engine-stubs.js"
+		case "$mode" in
+		js)	cat "$lib_dir/reference/bench.js" \
+			    "$lib_dir/reference/$benchmark.js" ;;
+		opt)	cat "$out_dir/$benchmark-opt.js" ;;
+		dev)	cat "$out_dir/$benchmark-extdeps.js" \
+			    "$out_dir/$benchmark-intdeps.js" \
+			    "$out_dir/$benchmark.js" ;;
+		*)	die "Unknown mode: $mode"
+		esac
+		cat "$lib_dir/start-benchmark.js"
+	} > "$js"
 
 	info "$benchmark [$mode] $engine" 
 	"$engine_bin" "$js" | sed 's/[^:]*:\s//'
