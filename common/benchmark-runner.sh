@@ -12,60 +12,132 @@
 # set -x
 
 RUN_DIR="$(dirname "$0")"
-OUT_DIR="$RUN_DIR/target/scala-2.10"
-LIB_DIR="$(dirname "$0")/../common"
-BENCHMARK="$(basename "$(cd "$RUN_DIR" && pwd)")"
+ROOT_DIR="./$(git rev-parse --show-cdup)" 
+ENGINES="d8 node"
+MODES="dev opt js"
+SEP='
+'
 
-runner=""
-engine="d8"
-mode="dev"
+trap "exit" SIGHUP SIGINT SIGTERM
 
 die() {
 	echo >&2 "$@"
 	exit 1
 }
 
-while test $# != 0; do
-	arg="$1"; shift
-
-	case "$arg" in
-	dev|opt|js) mode="$arg" ;;
-	d8) engine="${arg}" ;;
-	node) engine="${arg}" runner="${arg}_runner" ;;
-	esac
-done
-
-test -z "$runner" && runner="$engine"
-
-node_runner()
+info()
 {
-	js="$OUT_DIR/$BENCHMARK.node.js"
-	cat "$@" > "$js"
-	node "$js"
+	printf "%-20s : " "$1"; shift
+	test $# -gt 0 && echo "$@"
+}
+
+print_option()
+{
+	echo "[$@]" | sed 's/ /|/g'
+}
+
+find_binary()
+{
+	version_options="$1"; shift
+	engine="$1"
+
+	for bin in $@; do
+		path="$(which "$bin" 2>/dev/null)"
+		if test -n "$path"; then
+			info "$engine" "$($path $version_options) [$path]"
+			eval "${engine}_bin=$path"
+			return
+		fi
+	done
+
+	info "$engine" "No binary found while searching \$PATH for $@"
+}
+
+detect_engine()
+{
+	engine="$1"
+
+	test -n "$engine_bin" && return
+
+	case "$engine" in
+	d8)	find_binary "-e print(version())" d8 ;;
+	node)	find_binary "-v" node nodejs js ;;
+	*)	die "Unknown engine: $engine"
+	esac
+}
+
+detect_engines()
+{
+	for engine in $@; do
+		detect_engine "$engine"
+	done
+}
+
+run_benchmark_mode()
+{
+	engine="$1" benchmark="$2" mode="$3"
+	out_dir="$ROOT_DIR/$benchmark/target/scala-2.10"
+	lib_dir="$ROOT_DIR/common"
+	js="$out_dir/$benchmark.$engine-$mode.js"
+	engine_bin=$(eval echo \$"${engine}_bin")
+
+	test -z "$engine_bin" && return
+
+	case "$mode" in
+	js)
+		cat	"$lib_dir/$engine-stubs.js" \
+			"$lib_dir/reference/bench.js" \
+			"$lib_dir/reference/$benchmark.js" \
+			"$lib_dir/start-benchmark.js"
+		;;
+	opt)
+		cat	"$lib_dir/$engine-stubs.js" \
+			"$out_dir/$benchmark-opt.js" \
+			"$lib_dir/start-benchmark.js"
+		;;
+	dev)
+		cat	"$lib_dir/$engine-stubs.js" \
+			"$out_dir/$benchmark-extdeps.js" \
+			"$out_dir/$benchmark-intdeps.js" \
+			"$out_dir/$benchmark.js" \
+			"$lib_dir/start-benchmark.js"
+		;;
+	*)
+		die "Unknown mode: $mode"
+	esac > "$js"
+
+	info "$benchmark [$mode] $engine" 
+	"$engine_bin" "$js" | sed 's/[^:]*:\s//'
 }
 
 run_benchmark()
 {
-	case "$mode" in
-	js)
-		$runner "$LIB_DIR/$engine-stubs.js" \
-			"$LIB_DIR/reference/bench.js" \
-			"$LIB_DIR/reference/$BENCHMARK.js" \
-			"$LIB_DIR/start-benchmark.js"
-		;;
-	opt)
-		$runner "$LIB_DIR/$engine-stubs.js" \
-			"$OUT_DIR/$BENCHMARK-opt.js" \
-			"$LIB_DIR/start-benchmark.js"
-		;;
-	dev)
-		$runner "$LIB_DIR/$engine-stubs.js" \
-			"$OUT_DIR/$BENCHMARK-extdeps.js" \
-			"$OUT_DIR/$BENCHMARK-intdeps.js" \
-			"$OUT_DIR/$BENCHMARK.js" \
-			"$LIB_DIR/start-benchmark.js"
-		;;
-	*)
-		echo "Usage: $0 [d8|node] [dev|opt|js]"
-	esac
+	benchmark="$(basename "$(cd "$RUN_DIR" && pwd)")"
+
+	engines=
+	modes=
+
+	while test $# != 0; do
+		arg="$1"; shift
+
+		case "$arg" in
+		dev|opt|js)	modes="$modes$SEP$arg" ;;
+		d8|node)	engines="$engines$SEP$arg" ;;
+		*)		die "Usage: $0 $(print_option $ENGINES) $(print_option $MODES)"
+		esac
+	done
+
+	test -z "$engines" && engines="d8" ||
+		engines="$(echo "$engines" | sort -u)"
+
+	test -z "$modes" && modes="dev" ||
+		modes="$(echo "$modes" | sort -u)"
+
+	detect_engines "$engines"
+
+	for mode in $modes; do
+		for engine in $engines; do
+			run_benchmark_mode "$engine" "$benchmark" "$mode" 
+		done
+	done
 }

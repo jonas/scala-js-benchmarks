@@ -2,14 +2,7 @@
 
 . "$(dirname "$0")/common/benchmark-runner.sh"
 
-info()
-{
-	printf "%-20s : " "$1"; shift
-	test $# -gt 0 && echo "$@"
-}
-
-info "d8" "$(d8 -e 'print(version())') [$(which d8)]"
-info "node" "$(node -v) [$(which node)]"
+detect_engines $ENGINES
 
 for benchmark in $(find . -mindepth 2 -name "run.sh"); do
 	name="$(basename "$(dirname "$benchmark")")"
@@ -19,10 +12,9 @@ for benchmark in $(find . -mindepth 2 -name "run.sh"); do
 	info "$name [opt] sbt"
 	TIME="%E" time sbt "$name/optimizeJS" >/dev/null
 
-	for mode in dev opt js; do
-		for engine in d8 node; do
-			info "$name [$mode] $engine" 
-			"$name/run.sh" "$engine" "$mode" | sed 's/[^:]*:\s//'
+	for mode in $MODES; do
+		for engine in $ENGINES; do
+			run_benchmark_mode "$engine" "$name" "$mode"
 		done
 	done
 done
