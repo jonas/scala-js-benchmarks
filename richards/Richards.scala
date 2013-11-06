@@ -47,13 +47,13 @@ package benchmarks.richards
 
 /**
  * Richards simulates the task dispatcher of an operating system.
- **/
+ */
 class Richards extends benchmarks.Benchmark {
 
   import Richards._
- 
+
   override def prefix = "Richards"
-  
+
   def run() {
     val scheduler = new Scheduler()
     scheduler.addIdleTask(ID_IDLE, 0, null, COUNT)
@@ -101,7 +101,7 @@ object Richards {
    * They don't have any meaning a such but are characteristic of a
    * correct run so if the actual queue or hold count is different from
    * the expected there must be a bug in the implementation.
-   **/
+   */
   val EXPECTED_QUEUE_COUNT = 2322
   val EXPECTED_HOLD_COUNT = 928
 
@@ -116,7 +116,6 @@ object Richards {
   val KIND_DEVICE = 0
   val KIND_WORK = 1
 }
-
 
 /**
  * A scheduler can be used to schedule a set of tasks based on their relative
@@ -300,7 +299,7 @@ class TaskControlBlock(val link: TaskControlBlock, val id: Int, val priority: In
       queue = packet
       markAsRunnable()
       if (priority > task.priority)
-		return this
+        return this
     } else {
       queue = packet.addTo(queue)
     }
@@ -343,7 +342,6 @@ case class IdleTask(scheduler: Scheduler, var v1: Int, var count: Int) extends T
 
 }
 
-
 /**
  * A task that suspends itself after each time it has been run to simulate
  * waiting for data from an external device.
@@ -364,7 +362,6 @@ case class DeviceTask(scheduler: Scheduler) extends Task(scheduler) {
   }
 
 }
-
 
 /**
  * A task that manipulates work packets.
@@ -394,7 +391,6 @@ case class WorkerTask(scheduler: Scheduler, var v1: Int, var v2: Int) extends Ta
   }
 
 }
-
 
 /**
  * A task that manipulates work packets and then suspends itself.
@@ -435,7 +431,6 @@ case class HandlerTask(scheduler: Scheduler) extends Task(scheduler) {
 
 }
 
-
 /**
  * A simple package of data that is manipulated by the tasks.  The exact layout
  * of the payload data carried by a packet is not importaint, and neither is the
@@ -456,7 +451,7 @@ case class Packet(var link: Packet, var id: Int, val kind: Int) {
   def addTo(queue: Packet): Packet = {
     link = null
     if (queue == null) {
-	  this
+      this
     } else {
       var next = queue
       while (next.link != null)

@@ -54,7 +54,7 @@ class Engine(val config: EngineConfiguration) {
   def renderScene(scene: Scene, canvasContext: CanvasRenderingContext2D): Unit = {
     for {
       y <- 0 until config.canvasHeight
-      x <- 0 until config.canvasWidth 
+      x <- 0 until config.canvasWidth
     } {
       val yp = y * 1.0 / config.canvasHeight * 2 - 1;
       val xp = x * 1.0 / config.canvasWidth * 2 - 1;
@@ -63,7 +63,7 @@ class Engine(val config: EngineConfiguration) {
       val color = getPixelColor(ray, scene)
       setPixel(canvasContext, x, y, color)
     }
- 
+
     if (canvasContext == null && diagonalColorBrightnessCheckSum != 2321) {
       throw new Error("Scene rendered incorrectly")
     }
@@ -84,9 +84,7 @@ class Engine(val config: EngineConfiguration) {
     for (shape <- scene.shapes) {
       if (shape != exclude) {
         val info = shape.intersect(ray)
-        if (info.isHit &&
-            info.distance >= 0 &&
-            info.distance < best.distance) {
+        if (info.isHit && info.distance >= 0 && info.distance < best.distance) {
           best = info
           hits = hits + 1
         }
@@ -97,7 +95,7 @@ class Engine(val config: EngineConfiguration) {
     best
   }
 
-  def getReflectionRay(P: Vector , N: Vector , V: Vector): Ray = {
+  def getReflectionRay(P: Vector, N: Vector, V: Vector): Ray = {
     val c1 = -N.dot(V)
     val R1 = N.multiplyScalar(2 * c1) + V
 
@@ -126,9 +124,7 @@ class Engine(val config: EngineConfiguration) {
       if (depth <= config.rayDepth) {
         // calculate reflection ray
         if (config.renderReflections && info.shape.material.reflection > 0) {
-          val reflectionRay = getReflectionRay(info.position,
-                                                    info.normal,
-                                                    ray.direction)
+          val reflectionRay = getReflectionRay(info.position, info.normal, ray.direction)
           val refl = testIntersection(reflectionRay, scene, info.shape)
 
           val reflColor = if (refl.isHit && refl.distance > 0) {
@@ -150,18 +146,14 @@ class Engine(val config: EngineConfiguration) {
         val shadowRay = new Ray(info.position, v)
 
         shadowInfo = testIntersection(shadowRay, scene, info.shape)
-        if (shadowInfo.isHit &&
-            shadowInfo.shape != info.shape
-            /*&& shadowInfo.shape.type != 'PLANE'*/) {
+        if (shadowInfo.isHit && shadowInfo.shape != info.shape) {
           val vA = color.multiplyScalar(0.5)
           val dB = (0.5 * math.pow(shadowInfo.shape.material.transparency, 0.5))
           color = vA.addScalar(dB)
         }
       }
       // Phong specular highlights
-      if (config.renderHighlights &&
-          !shadowInfo.isHit &&
-          (info.shape.material.gloss > 0)) {
+      if (config.renderHighlights && !shadowInfo.isHit && info.shape.material.gloss > 0) {
         var Lv = (info.shape.position - light.position).normalize
 
         var E = (scene.camera.position - info.shape.position).normalize

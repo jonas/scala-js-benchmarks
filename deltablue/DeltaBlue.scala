@@ -94,7 +94,7 @@ class DeltaBlue extends benchmarks.Benchmark {
       }
     }
   }
-  
+
   /**
    * This test constructs a two sets of variables related to each
    * other by a simple linear transformation (scale and offset). The
@@ -107,7 +107,7 @@ class DeltaBlue extends benchmarks.Benchmark {
     val offset = new Variable("offset", 1000)
     var src: Variable = null
     var dst: Variable = null
-  
+
     val dests = ArrayBuffer[Variable]()
     for (i <- 0 until n) {
       src = new Variable("src", i)
@@ -129,8 +129,8 @@ class DeltaBlue extends benchmarks.Benchmark {
       if (dests(i).value != i * 5 + 2000) print("Projection 4 failed")
     }
   }
-  
-  def change(v: Variable, newValue: Int)(implicit planner: Planner)  {
+
+  def change(v: Variable, newValue: Int)(implicit planner: Planner) {
     val edit = new EditConstraint(v, PREFERRED)
     val plan = planner.extractPlanFromConstraints(ArrayBuffer(edit))
     for (i <- 0 until 10) {
@@ -140,7 +140,6 @@ class DeltaBlue extends benchmarks.Benchmark {
     edit.destroyConstraint
   }
 }
-
 
 /**
  * Strengths are used to measure the relative importance of constraints.
@@ -163,8 +162,9 @@ case object WEAKEST         extends Strength(6, "weakest")
 // Compile time computed constants.
 object Strength {
 
-  val NEXT_WEAKER = List(WEAKEST, WEAK_DEFAULT, NORMAL, STRONG_DEFAULT,
-                      PREFERRED, STRONG_REFERRED)
+  val NEXT_WEAKER = List(
+    WEAKEST, WEAK_DEFAULT, NORMAL, STRONG_DEFAULT,
+    PREFERRED, STRONG_REFERRED)
 
   def stronger(s1: Strength, s2: Strength): Boolean =
     s1.value < s2.value
@@ -179,8 +179,7 @@ object Strength {
     if (stronger(s1, s2)) s1 else s2
 }
 
-
-abstract class Constraint(val strength: Strength)(implicit planner: Planner)  {
+abstract class Constraint(val strength: Strength)(implicit planner: Planner) {
 
   def isSatisfied(): Boolean
   def markUnsatisfied(): Unit
@@ -257,9 +256,9 @@ abstract class UnaryConstraint(myOutput: Variable, strength: Strength)(implicit 
   }
 
   /// Decides if this constraint can be satisfied and records that decision.
- def chooseMethod(mark: Int) {
+  def chooseMethod(mark: Int) {
     satisfied = (myOutput.mark != mark) &&
-        Strength.stronger(strength, myOutput.walkStrength)
+      Strength.stronger(strength, myOutput.walkStrength)
   }
 
   /// Returns true if this constraint is satisfied in the current solution.
@@ -296,7 +295,6 @@ abstract class UnaryConstraint(myOutput: Variable, strength: Strength)(implicit 
   }
 }
 
-
 /**
  * Variables that should, with some level of preference, stay the same.
  * Planners may exploit the fact that instances, if satisfied, will not
@@ -308,7 +306,6 @@ class StayConstraint(v: Variable, str: Strength)(implicit planner: Planner) exte
     // Stay constraints do nothing.
   }
 }
-
 
 /**
  * A unary input constraint used to mark a variable that the client
@@ -324,13 +321,11 @@ class EditConstraint(v: Variable, str: Strength)(implicit planner: Planner) exte
   }
 }
 
-
 object Direction {
   val NONE = 1
   val FORWARD = 2
   val BACKWARD = 0
 }
-
 
 /**
  * Abstract superclass for constraints having two possible output
@@ -352,28 +347,28 @@ abstract class BinaryConstraint(v1: Variable, v2: Variable, strength: Strength)(
       direction =
         if ((v2.mark != mark && Strength.stronger(strength, v2.walkStrength)))
           Direction.FORWARD
-	else
-	  Direction.NONE
+        else
+          Direction.NONE
     }
     if (v2.mark == mark) {
       direction =
         if (v1.mark != mark && Strength.stronger(strength, v1.walkStrength))
           Direction.BACKWARD
-	else
-	  Direction.NONE
+        else
+          Direction.NONE
     }
     if (Strength.weaker(v1.walkStrength, v2.walkStrength)) {
       direction =
         if (Strength.stronger(strength, v1.walkStrength))
           Direction.BACKWARD
-	else
-	  Direction.NONE
+        else
+          Direction.NONE
     } else {
       direction =
         if (Strength.stronger(strength, v2.walkStrength))
           Direction.FORWARD
-	else
-	  Direction.BACKWARD
+        else
+          Direction.BACKWARD
     }
   }
 
@@ -427,7 +422,6 @@ abstract class BinaryConstraint(v1: Variable, v2: Variable, strength: Strength)(
     direction = Direction.NONE
   }
 }
-
 
 /**
  * Relates two variables by the linear scaling relationship: "v2 =
@@ -484,7 +478,6 @@ class ScaleConstraint(v1: Variable, scale: Variable, offset: Variable,
 
 }
 
-
 /**
  * Constrains two variables to have the same value.
  */
@@ -495,13 +488,12 @@ class EqualityConstraint(v1: Variable, v2: Variable, strength: Strength)(implici
   }
 }
 
-
 /**
  * A constrained variable. In addition to its value, it maintain the
  * structure of the constraint graph, the current dataflow graph, and
  * various parameters of interest to the DeltaBlue incremental
  * constraint solver.
- **/
+ */
 class Variable(val name: String, var value: Int) {
 
   val constraints = ArrayBuffer[Constraint]()
@@ -525,7 +517,6 @@ class Variable(val name: String, var value: Int) {
   }
 }
 
-
 class Planner {
 
   var currentMark = 0
@@ -548,7 +539,7 @@ class Planner {
     val mark = newMark()
     var overridden = c.satisfy(mark)
     while (overridden != null)
-        overridden = overridden.satisfy(mark)
+      overridden = overridden.satisfy(mark)
   }
 
   /**
@@ -686,11 +677,10 @@ class Planner {
   def addConstraintsConsumingTo(v: Variable, coll: ArrayBuffer[Constraint]) {
     val determining = v.determinedBy
     for (c <- v.constraints) {
-      if (c != determining && c.isSatisfied()) coll +=c 
+      if (c != determining && c.isSatisfied()) coll += c
     }
   }
 }
-
 
 /**
  * A Plan is an ordered list of constraints to be executed in sequence

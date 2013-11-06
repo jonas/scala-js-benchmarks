@@ -19,12 +19,10 @@ package benchmarks.tracer
 // transparency:  0=opaque
 // reflection:   [0...infinity] 0 = no reflection
 abstract class Material(val reflection: Double, val transparency: Double, val gloss: Double) {
-//  var refraction = 0.50;
-
+  // var refraction = 0.50;
   def hasTexture = false
   def getColor(u: Double, v: Double): Color
 }
-
 
 class Chessboard(colorEven: Color, colorOdd: Color,
                  reflection: Double, transparency: Double, gloss: Double,
@@ -55,7 +53,6 @@ class Chessboard(colorEven: Color, colorOdd: Color,
       t
   }
 }
-
 
 class Solid(color: Color, reflection: Double, refraction: Double, transparency: Double, gloss: Double)
   extends Material(reflection, transparency, gloss) {

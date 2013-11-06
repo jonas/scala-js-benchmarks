@@ -55,7 +55,7 @@ class RenderScene extends Scene {
     new Vector(1.0, 0.25, 1.0),
     0.5,
     new Solid(
-      new Color(0.9,0.9,0.9),
+      new Color(0.9, 0.9, 0.9),
       0.1,
       0.0,
       0.0,
