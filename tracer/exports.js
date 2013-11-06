@@ -12,12 +12,12 @@
 
 (function(ScalaJSBenchmarks) {
   ScalaJSBenchmarks['push'](function() {
-    var benchmark = new ScalaJS.classes.benchmarks\ufe33tracer\ufe33Tracer();
+    var benchmark = new ScalaJS.classes.benchmarks_tracer_Tracer();
     benchmark.report();
   });
 
   ScalaJSBenchmarks['startApp'] = function() {
-    var app = new ScalaJS.classes.benchmarks\ufe33tracer\ufe33App();
+    var app = new ScalaJS.classes.benchmarks_tracer_App();
     app.init();
   };
 })(this['ScalaJSBenchmarks'] || (this['ScalaJSBenchmarks'] = []))

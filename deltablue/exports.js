@@ -12,7 +12,7 @@
 
 (function(ScalaJSBenchmarks) {
   ScalaJSBenchmarks['push'](function() {
-    var benchmark = new ScalaJS.classes.benchmarks\ufe33deltablue\ufe33DeltaBlue();
+    var benchmark = new ScalaJS.classes.benchmarks_deltablue_DeltaBlue();
     benchmark.report();
   });
 })(this['ScalaJSBenchmarks'] || (this['ScalaJSBenchmarks'] = []))
