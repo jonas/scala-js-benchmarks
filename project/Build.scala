@@ -40,6 +40,7 @@ object ScalaJSBuild extends Build {
 	     clean in common,
 	     clean in deltablue,
 	     clean in richards,
+	     clean in sudoku,
 	     clean in tracer
 	  ).value
       )
@@ -47,12 +48,14 @@ object ScalaJSBuild extends Build {
       common,
       deltablue,
       richards,
+      sudoku,
       tracer
   )
 
   lazy val common = project("Common", defaultSettings)
   lazy val deltablue = project("DeltaBlue", benchmarkSettings).dependsOn(common)
   lazy val richards = project("Richards", benchmarkSettings).dependsOn(common)
+  lazy val sudoku = project("Sudoku", benchmarkSettings).dependsOn(common)
   lazy val tracer = project("Tracer", benchmarkSettings).dependsOn(common)
 
   def project(id: String, settings: Seq[sbt.Def.Setting[_]]) = Project(
