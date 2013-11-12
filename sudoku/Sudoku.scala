@@ -156,8 +156,7 @@ class Sudoku extends benchmarks.Benchmark {
     // Chose the unfilled square s with the fewest possibilities
     val (s, n) = values.filter(_._2.length > 1).minBy(_._2.length)
 
-    // values(s).toStream.map { d =>
-    values(s).map { d =>
+    values(s).toStream.map { d =>
       val solution = values.clone
       if (assign(solution, s, d.toString))
         search(solution)
