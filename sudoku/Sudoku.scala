@@ -18,7 +18,12 @@ class Sudoku extends benchmarks.Benchmark {
   override def prefix = "Sudoku"
 
   def run {
-    solve(hard1)
+    solve(hard1) match {
+      case Some(values) =>
+        if (!hard1Solutions.contains(asString(values)))
+          println("Invalid solution found: " + asString(values))
+      case _ => println("No solution found")
+    }
   }
 
   def cross(as: String, bs: String) =
@@ -111,6 +116,9 @@ class Sudoku extends benchmarks.Benchmark {
   val grid1 = "003020600900305001001806400008102900700000008006708200002609500800203009005010300"
   val grid2 = "4.....8.5.3..........7......2.....6.....8.4......1.......6.3.7.5..2.....1.4......"
   val hard1 = ".....6....59.....82....8....45........3........6..3.54...325..6.................."
+  val hard1Solutions = List(
+    "874196325359742618261538497145679832783254169926813754417325986598461273632987541",
+    "834596217659712438271438569745169382923854671186273954417325896562987143398641725")
 
   def test() {
     require(squares.length == 81)
@@ -140,6 +148,9 @@ class Sudoku extends benchmarks.Benchmark {
     }
     println
   }
+
+  def asString(values: Grid): String =
+    (for (r <- rows; c <- cols) yield values(r.toString + c.toString)).mkString
 
   // ################ Search ################
 
