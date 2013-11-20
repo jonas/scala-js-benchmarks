@@ -52,13 +52,14 @@ class Sudoku extends benchmarks.Benchmark {
     val values = scala.collection.mutable.Map[String, String]()
     values ++= squares.map(s => (s, digits)).toMap
 
-    Try(for ((s, d) <- gridValues(grid)) {
+    val iter = gridValues(grid).iterator
+    while (iter.hasNext) {
+      val (s, d) = iter.next
       if (digits.contains(d) && !assign(values, s, d))
-        throw new Exception("Can't assign " + d + " to square " + s) // (Fail if we can't assign d to square s.)
-    }) match {
-      case Success(_) => values
-      case Failure(_) => False
+        return False
     }
+
+    values
   }
 
   def gridValues(grid: String) = {
@@ -97,18 +98,19 @@ class Sudoku extends benchmarks.Benchmark {
     }
 
     // (2) If a unit u is reduced to only one place for a value d, then put it there.
-    Try(for (u <- units(s)) {
+    val iter = units(s).iterator
+    while (iter.hasNext) {
+      val u = iter.next
       val dplaces = for (s <- u; if (values(s).contains(d))) yield s
       if (dplaces.isEmpty)
-        throw new Exception("Contradiction: no place for " + d)
+        return False // Contradiction: no place for d
       if (dplaces.size == 1) {
         if (!assign(values, dplaces(0), d))
-          throw new Exception("Failed to assign " + dplaces(0))
+          return False
       }
-    }) match {
-      case Success(_) => values
-      case Failure(_) => False
     }
+
+    values
   }
 
   // ################ Unit Tests ################
