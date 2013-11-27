@@ -17,9 +17,9 @@ object Sudoku extends benchmarks.Benchmark {
   override def prefix = "Sudoku"
 
   def run {
-    solve(hard1) match {
+    solve(grid1) match {
       case Some(values) =>
-        if (!hard1Solutions.contains(asString(values)))
+        if (!grid1Solutions.contains(asString(values)))
           println("Invalid solution found: " + asString(values))
       case _ => println("No solution found")
     }
@@ -117,6 +117,10 @@ object Sudoku extends benchmarks.Benchmark {
   val grid1 = "003020600900305001001806400008102900700000008006708200002609500800203009005010300"
   val grid2 = "4.....8.5.3..........7......2.....6.....8.4......1.......6.3.7.5..2.....1.4......"
   val hard1 = ".....6....59.....82....8....45........3........6..3.54...325..6.................."
+  val grid1Solutions = List(
+    "483921657967345821251876493548132976729564138136798245372689514814253769695417382")
+  val grid2Solutions = List(
+    "417369825632158947958724316825437169791586432346912758289643571573291684164875293")
   val hard1Solutions = List(
     "874196325359742618261538497145679832783254169926813754417325986598461273632987541",
     "834596217659712438271438569745169382923854671186273954417325896562987143398641725")
