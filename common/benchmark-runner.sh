@@ -13,7 +13,7 @@
 
 RUN_DIR="$(dirname "$0")"
 ROOT_DIR="./$(git rev-parse --show-cdup)" 
-ENGINES="d8 node phantomjs"
+ENGINES="d8 node"
 MODES="dev opt js"
 SEP='
 '
