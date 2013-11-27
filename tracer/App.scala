@@ -9,7 +9,6 @@
 package benchmarks.tracer
 
 import scala.scalajs.js
-import scala.scalajs.js.annotation.JSName
 
 class App {
   def init() {

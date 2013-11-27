@@ -9,6 +9,20 @@
 package benchmarks
 
 import scala.compat.Platform
+import scala.scalajs.js
+
+object Benchmark {
+  val benchmarks = js.Array[js.Function0[Unit]]()
+
+  val global = js.Dynamic.global.asInstanceOf[js.Dictionary]
+  global("ScalaJSBenchmarks") = benchmarks
+
+  def add(benchmark: Benchmark) {
+    benchmarks.push {
+      benchmark.report _
+    }
+  }
+}
 
 /** `Benchmark` base class based on the deprecated scala.testing.Benchmark.
  *
@@ -21,6 +35,8 @@ import scala.compat.Platform
  *  @author Iulian Dragos, Burak Emir
  */
 abstract class Benchmark {
+
+  Benchmark.add(this)
 
   /** This method should be implemented by the concrete benchmark.
    *  It will be called by the benchmarking code for a number of times.

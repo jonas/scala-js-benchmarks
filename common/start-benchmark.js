@@ -10,10 +10,11 @@
  * Run one or more benchmarks.
  */
 
-this['ScalaJSBenchmarks'].forEach(function(benchmark) {
+var globalScope = (typeof global === 'object') ? global : this;
+globalScope['ScalaJSBenchmarks'].forEach(function(benchmark) {
   benchmark();
 });
 
 if (typeof phantom === 'object') {
-	phantom.exit();
+  phantom.exit();
 }

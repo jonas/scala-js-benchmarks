@@ -10,9 +10,4 @@
  * Export benchmarks to be run by common/start-benchmark.js.
  */
 
-(function(ScalaJSBenchmarks) {
-  ScalaJSBenchmarks['push'](function() {
-    var benchmark = new ScalaJS.classes.benchmarks_richards_Richards();
-    benchmark.report();
-  });
-})(this['ScalaJSBenchmarks'] || (this['ScalaJSBenchmarks'] = []))
+ScalaJS.modules.benchmarks_richards_Richards();

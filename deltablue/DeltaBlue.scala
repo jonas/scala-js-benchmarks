@@ -47,7 +47,7 @@ package benchmarks.deltablue
 
 import scala.collection.mutable.ArrayBuffer
 
-class DeltaBlue extends benchmarks.Benchmark {
+object DeltaBlue extends benchmarks.Benchmark {
 
   override def prefix = "DeltaBlue"
 

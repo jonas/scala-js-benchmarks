@@ -10,12 +10,9 @@
  * Export benchmarks to be run by common/start-benchmark.js.
  */
 
-(function(ScalaJSBenchmarks) {
-  ScalaJSBenchmarks['push'](function() {
-    var benchmark = new ScalaJS.classes.benchmarks_tracer_Tracer();
-    benchmark.report();
-  });
+ScalaJS.modules.benchmarks_tracer_Tracer();
 
+(function(ScalaJSBenchmarks) {
   ScalaJSBenchmarks['startApp'] = function() {
     var app = new ScalaJS.classes.benchmarks_tracer_App();
     app.init();

@@ -16,7 +16,7 @@
 
 package benchmarks.tracer
 
-class Tracer extends benchmarks.Benchmark {
+object Tracer extends benchmarks.Benchmark {
 
   val config = EngineConfiguration(
     imageWidth = 100,

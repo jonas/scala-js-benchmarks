@@ -11,9 +11,8 @@
 package benchmarks.sudoku
 
 import scala.language.implicitConversions
-import scala.util.{ Try, Success, Failure }
 
-class Sudoku extends benchmarks.Benchmark {
+object Sudoku extends benchmarks.Benchmark {
 
   override def prefix = "Sudoku"
 

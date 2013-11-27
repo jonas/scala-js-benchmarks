@@ -10,16 +10,4 @@
  * Export benchmarks to be run by common/start-benchmark.js.
  */
 
-// FIXME: Needed for scala.util.Try. Move to Scala.js
-ScalaJS.is.java_lang_StackOverflowError = function() { return false; };
-ScalaJS.is.java_lang_VirtualMachineError = function() { return false; };
-ScalaJS.is.java_lang_ThreadDeath = function() { return false; };
-ScalaJS.is.java_lang_InterruptedException = function() { return false; };
-ScalaJS.is.java_lang_LinkageError = function() { return false; };
-
-(function(ScalaJSBenchmarks) {
-  ScalaJSBenchmarks['push'](function() {
-    var benchmark = new ScalaJS.classes.benchmarks_sudoku_Sudoku();
-    benchmark.report();
-  });
-})(this['ScalaJSBenchmarks'] || (this['ScalaJSBenchmarks'] = []))
+ScalaJS.modules.benchmarks_sudoku_Sudoku();

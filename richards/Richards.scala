@@ -48,9 +48,7 @@ package benchmarks.richards
 /**
  * Richards simulates the task dispatcher of an operating system.
  */
-class Richards extends benchmarks.Benchmark {
-
-  import Richards._
+object Richards extends benchmarks.Benchmark {
 
   override def prefix = "Richards"
 
@@ -89,9 +87,7 @@ class Richards extends benchmarks.Benchmark {
       throw new Exception("bad scheduler hold-count")
     }
   }
-}
 
-object Richards {
   val DATA_SIZE = 4
   val COUNT = 1000
 
