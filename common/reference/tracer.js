@@ -9,12 +9,12 @@
 // JavaScript framework which is used by the ray tracer.
 
 
-(function(scope) {
-  scope['ScalaJSBenchmarks'] = scope['ScalaJSBenchmarks'] || [];
-  ScalaJSBenchmarks['push'](function() {
+(function(scope, benchmarks) {
+  scope[benchmarks] = scope[benchmarks] || [];
+  scope[benchmarks].push(function() {
     Benchmark.report("Tracer", renderScene, renderScene);
   });
-})(typeof global === 'object' ? global : this);
+})(typeof global === 'object' ? global : this, 'ScalaJSBenchmarks');
 
 // Variable used to hold a number that can be used to verify that
 // the scene was ray traced correctly.
