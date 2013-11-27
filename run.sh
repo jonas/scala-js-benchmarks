@@ -2,9 +2,11 @@
 
 . "$(dirname "$0")/common/benchmark-runner.sh"
 
+EXCLUDE=sudoku
+
 detect_engines $ENGINES
 
-for benchmark in $(find . -mindepth 2 -name "run.sh"); do
+for benchmark in $(find . -mindepth 2 -name "run.sh" | grep -vE "$EXCLUDE"); do
 	name="$(basename "$(dirname "$benchmark")")"
 	echo
 	info "$name [dev] sbt"
