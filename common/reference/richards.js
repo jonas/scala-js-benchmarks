@@ -35,11 +35,12 @@
 // Martin Richards.
 
 
-(function(ScalaJSBenchmarks) {
+(function(scope) {
+  scope['ScalaJSBenchmarks'] = scope['ScalaJSBenchmarks'] || [];
   ScalaJSBenchmarks['push'](function() {
     Benchmark.report("Richards", runRichards, runRichards);
   });
-})(this['ScalaJSBenchmarks'] || (this['ScalaJSBenchmarks'] = []));
+})(typeof global === 'object' ? global : this);
 
 
 /**

@@ -23,11 +23,12 @@
 // more like a JavaScript program.
 
 
-(function(ScalaJSBenchmarks) {
+(function(scope) {
+  scope['ScalaJSBenchmarks'] = scope['ScalaJSBenchmarks'] || [];
   ScalaJSBenchmarks['push'](function() {
     Benchmark.report('DeltaBlue', deltaBlue, deltaBlue);
   });
-})(this['ScalaJSBenchmarks'] || (this['ScalaJSBenchmarks'] = []));
+})(typeof global === 'object' ? global : this);
 
 
 
