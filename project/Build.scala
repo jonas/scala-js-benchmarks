@@ -5,9 +5,9 @@ import scala.scalajs.sbtplugin._
 import ScalaJSPlugin._
 import ScalaJSKeys._
 
-object ScalaJSBuild extends Build {
+object ScalaJSBenchmarks extends Build {
 
-  val scalajsScalaVersion = "2.10.2"
+  val scalaJSScalaVersion = "2.10.2"
 
   val projectSettings = Defaults.defaultSettings ++ Seq(
       organization := "scalajs-benchmarks",
@@ -15,7 +15,7 @@ object ScalaJSBuild extends Build {
   )
 
   val defaultSettings = projectSettings ++ scalaJSSettings ++ Seq(
-      scalaVersion := scalajsScalaVersion,
+      scalaVersion := scalaJSScalaVersion,
       scalacOptions ++= Seq(
           "-deprecation",
           "-unchecked",
@@ -62,7 +62,7 @@ object ScalaJSBuild extends Build {
       id = id.toLowerCase,
       base = file(id.toLowerCase),
       settings = settings ++ Seq(
-          name := s"$id - Scala.js Benchmark",
+          name := s"Scala.js Benchmarks - $id",
           moduleName := id.toLowerCase
       )
   )
