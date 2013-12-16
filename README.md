@@ -2,15 +2,15 @@
 
 This is a port of the Dart
 [benchmark harness](https://github.com/dartlang/benchmark_harness) to
-[Scala.js](https://github.com/lampepfl/scala-js).
+[Scala.js](https://github.com/scala-js/scala-js).
 
 You can see the benchmarks in action
-[here](http://jonas.github.io/scalajs-benchmarks/).
+[here](http://jonas.github.io/scala-js-benchmarks/).
 
 All derivative work is the copyright of their respective authors and
 distributed under their original license. All original work unless otherwise
 stated is distributed under the [same license as
-Scala.js](https://github.com/jonas/scalajs-benchmarks/LICENSE).
+Scala.js](https://github.com/jonas/scala-js-benchmarks/LICENSE).
 
 ## Get started
 
@@ -47,7 +47,7 @@ able to use `optimizeJS`.
 
 ## Troubleshooting
 
-### I have unresolved dependencies on `scalajs-...`
+### I have unresolved dependencies on `scala-js-...`
 
 You have probably forgotten to execute `publishLocal` from the sbt prompt in
 Scala.js.
