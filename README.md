@@ -1,7 +1,7 @@
 # Scala.js Benchmarks
 
 This is a port of the Dart
-[benchmark harness](https://github.com/dartlang/benchmark_harness) to
+[benchmark harness](https://github.com/dart-lang/benchmark_harness) to
 [Scala.js](https://github.com/scala-js/scala-js).
 
 You can see the benchmarks in action
