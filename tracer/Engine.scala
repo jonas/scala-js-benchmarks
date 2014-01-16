@@ -16,6 +16,7 @@
 package benchmarks.tracer
 
 import scala.scalajs.js
+import benchmarks.dom._
 
 case class EngineConfiguration(
   imageWidth: Int = 100,

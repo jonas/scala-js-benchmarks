@@ -37,10 +37,10 @@
 
 (function(scope, benchmarks) {
   scope[benchmarks] = scope[benchmarks] || [];
-  scope[benchmarks].push(function() {
+  scope[benchmarks] = function() {
     Benchmark.report("Richards", runRichards, runRichards);
-  });
-})(typeof global === 'object' ? global : this, 'ScalaJSBenchmarks');
+  };
+})(typeof global === 'object' ? global : this, 'runScalaJSBenchmarks');
 
 
 /**

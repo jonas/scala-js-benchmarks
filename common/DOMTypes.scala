@@ -6,7 +6,7 @@
 **                          |/____/                                     **
 \*                                                                      */
 
-package benchmarks.tracer
+package benchmarks.dom
 
 import scala.scalajs.js
 

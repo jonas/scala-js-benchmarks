@@ -15,6 +15,8 @@
 // Ported from the Dart benchmark_harness to Scala.js by Jonas Fonseca 2013
 package benchmarks.tracer
 
+import benchmarks.dom._
+
 // 'event' null means scalar we are benchmarking
 class RenderScene extends Scene {
 

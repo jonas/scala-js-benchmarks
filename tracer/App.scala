@@ -9,15 +9,11 @@
 package benchmarks.tracer
 
 import scala.scalajs.js
+import benchmarks.dom._
 
-class App {
-  def init() {
-    val button = $("render")
+trait App extends benchmarks.BenchmarkApp {
 
-    button.onclick = renderScene _
-  }
-
-  def renderScene() {
+  def onClick() {
     val config = new EngineConfiguration(
       imageWidth = int("imageWidth"),
       imageHeight = int("imageHeight"),
@@ -35,19 +31,9 @@ class App {
     canvas.height = config.imageHeight
     val canvasContext = canvas.getContext("2d").asInstanceOf[CanvasRenderingContext2D]
 
-    var before = new js.Date()
-    new RenderScene().renderScene(config, canvasContext)
-    var after = new js.Date()
-    val elapsedTime = after.getTime() - before.getTime()
-    $("time").innerHTML = elapsedTime.toString(10)
+    time {
+      new RenderScene().renderScene(config, canvasContext)
+    }
   }
 
-  def $(id: String): DOMElement =
-    js.Dynamic.global.document.getElementById(id).asInstanceOf[DOMElement]
-
-  def int(id: String): Int =
-    js.parseInt($(id).asInstanceOf[HTMLInputElement].value).toInt
-
-  def bool(id: String): Boolean =
-    $(id).asInstanceOf[HTMLCheckboxElement].checked.toString == "true"
 }

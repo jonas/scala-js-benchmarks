@@ -12,15 +12,26 @@ import scala.compat.Platform
 import scala.scalajs.js
 
 object Benchmark {
-  val benchmarks = js.Array[js.Function0[Unit]]()
+  val benchmarks = js.Array[Benchmark]()
+  val benchmarkApps = js.Array[BenchmarkApp]()
 
   val global = js.Dynamic.global.asInstanceOf[js.Dictionary]
-  global("ScalaJSBenchmarks") = benchmarks
+  global("runScalaJSBenchmarks") = runBenchmarks _
+  global("initScalaJSBenchmarkApps") = initBenchmarkApps _
 
   def add(benchmark: Benchmark) {
-    benchmarks.push {
-      benchmark.report _
+    benchmarks.push(benchmark)
+    if (benchmark.isInstanceOf[BenchmarkApp]) {
+      benchmarkApps.push(benchmark.asInstanceOf[BenchmarkApp])
     }
+  }
+
+  def runBenchmarks() {
+    benchmarks.foreach { _.report }
+  }
+
+  def initBenchmarkApps() {
+    benchmarkApps.foreach { _.init }
   }
 }
 

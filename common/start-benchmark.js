@@ -11,9 +11,7 @@
  */
 
 var globalScope = (typeof global === 'object') ? global : this;
-globalScope['ScalaJSBenchmarks'].forEach(function(benchmark) {
-  benchmark();
-});
+globalScope['runScalaJSBenchmarks']();
 
 if (typeof phantom === 'object') {
   phantom.exit();

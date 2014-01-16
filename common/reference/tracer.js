@@ -11,10 +11,10 @@
 
 (function(scope, benchmarks) {
   scope[benchmarks] = scope[benchmarks] || [];
-  scope[benchmarks].push(function() {
+  scope[benchmarks] = function() {
     Benchmark.report("Tracer", renderScene, renderScene);
-  });
-})(typeof global === 'object' ? global : this, 'ScalaJSBenchmarks');
+  };
+})(typeof global === 'object' ? global : this, 'runScalaJSBenchmarks');
 
 // Variable used to hold a number that can be used to verify that
 // the scene was ray traced correctly.

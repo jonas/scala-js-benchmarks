@@ -6,7 +6,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
   </head>
 
-  <body onload="ScalaJSBenchmarks.startApp()">
+  <body onload="initScalaJSBenchmarkApps()">
     <canvas id="canvasContext" width="100" height="100" style="border:1px solid black"></canvas>
 
     <div>
@@ -30,7 +30,7 @@
     <div>
       Reflections: <input type="checkbox" id="renderReflections" checked>
     </div>
-    <button id="render">Render</button>
+    <button id="run">Render</button>
     <div>
       Time (ms): <span id="time"></span>
     </div>
