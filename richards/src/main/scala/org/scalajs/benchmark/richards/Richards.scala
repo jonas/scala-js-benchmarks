@@ -43,12 +43,12 @@
 // The benchmark was originally implemented in BCPL by
 // Martin Richards.
 
-package benchmarks.richards
+package org.scalajs.benchmark.richards
 
 /**
  * Richards simulates the task dispatcher of an operating system.
  */
-object Richards extends benchmarks.Benchmark {
+object Richards extends org.scalajs.benchmark.Benchmark {
 
   override def prefix = "Richards"
 

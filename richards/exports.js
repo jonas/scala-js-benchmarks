@@ -10,4 +10,4 @@
  * Export benchmarks to be run by common/start-benchmark.js.
  */
 
-ScalaJS.modules.benchmarks_richards_Richards();
+ScalaJS.modules.org_scalajs_benchmark_richards_Richards();

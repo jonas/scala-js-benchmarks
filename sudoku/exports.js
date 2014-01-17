@@ -10,4 +10,4 @@
  * Export benchmarks to be run by common/start-benchmark.js.
  */
 
-ScalaJS.modules.benchmarks_sudoku_Sudoku();
+ScalaJS.modules.org_scalajs_benchmark_sudoku_Sudoku();

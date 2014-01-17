@@ -28,7 +28,7 @@
 // Dart by Google 2008-2010.
 // Translated to Scala.js by Jonas Fonseca 2013
 
-package benchmarks.deltablue
+package org.scalajs.benchmark.deltablue
 
 /**
  * A Scala implementation of the DeltaBlue constraint-solving
@@ -47,7 +47,7 @@ package benchmarks.deltablue
 
 import scala.collection.mutable.ArrayBuffer
 
-object DeltaBlue extends benchmarks.Benchmark {
+object DeltaBlue extends org.scalajs.benchmark.Benchmark {
 
   override def prefix = "DeltaBlue"
 

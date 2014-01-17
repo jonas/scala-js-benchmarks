@@ -6,12 +6,12 @@
 **                          |/____/                                     **
 \*                                                                      */
 
-package benchmarks.tracer
+package org.scalajs.benchmark.tracer
 
+import org.scalajs.benchmark.dom._
 import scala.scalajs.js
-import benchmarks.dom._
 
-trait App extends benchmarks.BenchmarkApp {
+trait App extends org.scalajs.benchmark.BenchmarkApp {
 
   def onClick() {
     val config = new EngineConfiguration(

@@ -6,11 +6,10 @@
 **                          |/____/                                     **
 \*                                                                      */
 
-package benchmarks
+package org.scalajs.benchmark
 
 import scala.scalajs.js
-import benchmarks._
-import benchmarks.dom._
+import org.scalajs.benchmark.dom._
 
 trait BenchmarkApp {
 

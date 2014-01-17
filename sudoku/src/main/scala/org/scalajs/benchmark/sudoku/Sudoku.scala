@@ -8,11 +8,11 @@
 
 /* Based on code from: http://norvig.com/sudopy.shtml */
 
-package benchmarks.sudoku
+package org.scalajs.benchmark.sudoku
 
 import scala.language.implicitConversions
 
-object Sudoku extends benchmarks.Benchmark {
+object Sudoku extends org.scalajs.benchmark.Benchmark {
 
   override def prefix = "Sudoku"
 

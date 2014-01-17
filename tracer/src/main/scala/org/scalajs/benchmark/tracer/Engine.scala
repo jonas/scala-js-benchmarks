@@ -13,10 +13,11 @@
 //
 // Ported from the v8 benchmark suite by Google 2012.
 // Ported from the Dart benchmark_harness to Scala.js by Jonas Fonseca 2013
-package benchmarks.tracer
 
+package org.scalajs.benchmark.tracer
+
+import org.scalajs.benchmark.dom._
 import scala.scalajs.js
-import benchmarks.dom._
 
 case class EngineConfiguration(
   imageWidth: Int = 100,

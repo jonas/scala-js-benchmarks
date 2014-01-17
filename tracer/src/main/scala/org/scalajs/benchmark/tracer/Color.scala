@@ -13,7 +13,8 @@
 //
 // Ported from the v8 benchmark suite by Google 2012.
 // Ported from the Dart benchmark_harness to Scala.js by Jonas Fonseca 2013
-package benchmarks.tracer
+
+package org.scalajs.benchmark.tracer
 
 class Color(val red: Double, val green: Double, val blue: Double) {
 

@@ -10,4 +10,4 @@
  * Export benchmarks to be run by common/start-benchmark.js.
  */
 
-ScalaJS.modules.benchmarks_tracer_Tracer();
+ScalaJS.modules.org_scalajs_benchmark_tracer_Tracer();

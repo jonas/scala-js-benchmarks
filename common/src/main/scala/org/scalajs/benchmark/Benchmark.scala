@@ -6,7 +6,7 @@
 **                          |/____/                                     **
 \*                                                                      */
 
-package benchmarks
+package org.scalajs.benchmark
 
 import scala.compat.Platform
 import scala.scalajs.js

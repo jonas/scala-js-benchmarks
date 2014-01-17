@@ -13,9 +13,10 @@
 //
 // Ported from the v8 benchmark suite by Google 2012.
 // Ported from the Dart benchmark_harness to Scala.js by Jonas Fonseca 2013
-package benchmarks.tracer
 
-import benchmarks.dom._
+package org.scalajs.benchmark.tracer
+
+import org.scalajs.benchmark.dom._
 
 // 'event' null means scalar we are benchmarking
 class RenderScene extends Scene {
