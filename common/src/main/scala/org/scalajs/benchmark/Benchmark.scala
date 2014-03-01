@@ -15,7 +15,7 @@ object Benchmark {
   val benchmarks = js.Array[Benchmark]()
   val benchmarkApps = js.Array[BenchmarkApp]()
 
-  val global = js.Dynamic.global.asInstanceOf[js.Dictionary]
+  val global = js.Dynamic.global.asInstanceOf[js.Dictionary[js.Any]]
   global("runScalaJSBenchmarks") = runBenchmarks _
   global("initScalaJSBenchmarkApps") = initBenchmarkApps _
 
