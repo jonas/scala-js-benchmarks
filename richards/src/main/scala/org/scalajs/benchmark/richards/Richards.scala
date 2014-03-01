@@ -45,9 +45,12 @@
 
 package org.scalajs.benchmark.richards
 
+import scala.scalajs.js.annotation.JSExport
+
 /**
  * Richards simulates the task dispatcher of an operating system.
  */
+@JSExport
 object Richards extends org.scalajs.benchmark.Benchmark {
 
   override def prefix = "Richards"

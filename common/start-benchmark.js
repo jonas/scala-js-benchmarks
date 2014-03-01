@@ -10,8 +10,13 @@
  * Run one or more benchmarks.
  */
 
-var globalScope = (typeof global === 'object') ? global : this;
-globalScope['runScalaJSBenchmarks']();
+DeltaBlue().runBenchmark();
+//DeltaBlue().report();
+
+//var globalScope = (typeof global === 'object') ? global : this;
+//globalScope['runScalaJSBenchmarks']();
+
+Benchmark().runBenchmarks();
 
 if (typeof phantom === 'object') {
   phantom.exit();

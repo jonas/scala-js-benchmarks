@@ -46,10 +46,17 @@ package org.scalajs.benchmark.deltablue
  */
 
 import scala.collection.mutable.ArrayBuffer
+import scala.scalajs.js.annotation.JSExport
 
+@JSExport
 object DeltaBlue extends org.scalajs.benchmark.Benchmark {
 
   override def prefix = "DeltaBlue"
+
+  @JSExport
+  def runBenchmark() {
+    super.report();
+  }
 
   def run {
     chainTest(100)

@@ -15,7 +15,7 @@ for benchmark in $(find . -mindepth 2 -name "run.sh" | grep -vE "$EXCLUDE"); do
 	TIME="%E" time sbt "$name/optimizeJS" >/dev/null
 
 	for mode in $MODES; do
-		for engine in $ENGINES; do
+		for engine in d8; do
 			run_benchmark_mode "$engine" "$name" "$mode"
 		done
 	done

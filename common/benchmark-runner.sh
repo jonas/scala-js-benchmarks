@@ -14,7 +14,7 @@
 RUN_DIR="$(dirname "$0")"
 ROOT_DIR="./$(git rev-parse --show-cdup)" 
 ENGINES="d8 node"
-MODES="dev opt js"
+MODES="dev preopt opt js"
 SEP='
 '
 
@@ -92,6 +92,7 @@ run_benchmark_mode()
 		js)	cat "$lib_dir/reference/bench.js" \
 			    "$lib_dir/reference/$benchmark.js" ;;
 		opt)	cat "$out_dir/$benchmark-opt.js" ;;
+		preopt)	cat "$out_dir/$benchmark-preopt.js" ;;
 		dev)	cat "$out_dir/$benchmark-extdeps.js" \
 			    "$out_dir/$benchmark-intdeps.js" \
 			    "$out_dir/$benchmark.js" ;;
@@ -117,7 +118,7 @@ run_benchmark()
 		arg="$1"; shift
 
 		case "$arg" in
-		dev|opt|js)
+		dev|preopt|opt|js)
 			modes="$modes$SEP$arg" ;;
 		d8|node|phantomjs)
 			engines="$engines$SEP$arg" ;;

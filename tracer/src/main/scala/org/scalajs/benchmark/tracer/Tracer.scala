@@ -16,6 +16,9 @@
 
 package org.scalajs.benchmark.tracer
 
+import scala.scalajs.js.annotation.JSExport
+
+@JSExport
 object Tracer extends org.scalajs.benchmark.Benchmark with App {
 
   val config = EngineConfiguration(

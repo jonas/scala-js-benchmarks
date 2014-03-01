@@ -11,7 +11,7 @@ package org.scalajs.benchmark
 import scala.scalajs.js
 import org.scalajs.benchmark.dom._
 
-trait BenchmarkApp {
+abstract class BenchmarkApp {
 
   def onClick(): Unit
 

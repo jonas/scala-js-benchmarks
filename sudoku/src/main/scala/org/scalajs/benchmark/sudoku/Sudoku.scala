@@ -11,7 +11,9 @@
 package org.scalajs.benchmark.sudoku
 
 import scala.language.implicitConversions
+import scala.scalajs.js.annotation.JSExport
 
+@JSExport
 object Sudoku extends org.scalajs.benchmark.Benchmark {
 
   override def prefix = "Sudoku"
